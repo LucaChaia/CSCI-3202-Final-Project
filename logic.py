@@ -1,5 +1,6 @@
 import random
 #random.seed(100)
+import json
 
 pits_per_player = 3 #has to be 2 or greater for play() logic to work
 stones_per_pit = 2
@@ -8,6 +9,10 @@ winner = ""
 won = False #has there been *a* winner
 ai_wins = 0
 ai_losses = 0
+num_games = 1;
+num_group_games = 1;
+total_moves = []
+moves = 0
 
 board1 = [stones_per_pit] * (pits_per_player+1)
 board2 = [stones_per_pit] * (pits_per_player+1)
@@ -20,7 +25,7 @@ ai = False #our human player will go against an algorithm that chooses moves ran
 player = True #the player character will be human and not another random algorithm
 
 def newGame(flip_ai):
-    global board1, board2, ai, player, won, ai_wins, ai_losses, is_player_one
+    global board1, board2, ai, player, won, ai_wins, ai_losses, is_player_one, num_plays, moves
     
     if flip_ai:
         ai = not ai
@@ -33,6 +38,9 @@ def newGame(flip_ai):
     
     is_player_one = True
     won = False
+    
+    num_plays += 1
+    moves = 0
     
     print('\n\nNew Game:')
     display_board()
@@ -183,6 +191,24 @@ def display_board():
     return text
 
 def resetAI():
-    global ai_wins, ai_losses
+    global ai_wins, ai_losses, num_games, num_group_games, moves
+    
+    j = json.dumps({num_group_games:
+                    {
+                        "Is the enemy a True AI?": ai,
+                        "Number of Games Ran": num_games,
+                        "Avg moves per game": mean(total_moves),
+                        "Enemy win rate": calc_rate(),
+                        "Total Enemy Wins": ai_wins,
+                        "Total Enemy Losses": ai_losses
+                     }
+                    }, indent = 2)
+    json.dump()
+    
     ai_wins = 0
     ai_losses = 0
+    num_games = 0
+    moves = []
+    
+    num_group_games += 1
+    
