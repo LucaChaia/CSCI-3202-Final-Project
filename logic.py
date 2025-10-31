@@ -1,4 +1,5 @@
 import random
+#random.seed(100)
 
 pits_per_player = 3 #has to be 2 or greater for play() logic to work
 stones_per_pit = 2
@@ -32,8 +33,6 @@ def newGame(flip_ai):
     
     is_player_one = True
     won = False
-    ai_wins = 0
-    ai_losses = 0
     
     print('\n\nNew Game:')
     display_board()
@@ -42,9 +41,9 @@ def play(pit):
     global is_player_one, board1, board2
     
     if is_player_one:
-        print(f"Player chose pit {pit}")
+        print(f"Player chose pit {pit + 1}")
     else:
-        print(f"Enemy chose pit {pit}")
+        print(f"Enemy chose pit {pit + 1}")
     
     if valid_move(pit):
         is_board_one = is_player_one #if we're on player two, we're gonna start with board 2
@@ -102,6 +101,9 @@ def winning_eval():
     player_pits = True
     enemy_pits = True
     
+    if won:
+        return True
+    
     for i in range(0, pits_per_player-1):
         if board1[i] != 0:
             player_pits = False
@@ -114,11 +116,13 @@ def winning_eval():
         won = True
         p1_score = board1[mancala_index]
         p2_score = board2[mancala_index]
-        for j in range(0,mancala_index-1): #so we don't include the mancala
+        for j in range(0,mancala_index): 
             p1_score += board1[j]
             board1[j] = 0
             p2_score += board2[j]
             board2[j] = 0
+        board1[mancala_index] = p1_score
+        board2[mancala_index] = p2_score
         
         if p1_score > p2_score:
             winner = "Player"
@@ -177,3 +181,8 @@ def display_board():
             )
     print(text)
     return text
+
+def resetAI():
+    global ai_wins, ai_losses
+    ai_wins = 0
+    ai_losses = 0

@@ -14,7 +14,7 @@ def play(move = 0):
         b2.pack_forget()
         b3.pack_forget()
         b.pack_forget()
-        board.config(text= logic.display_board())
+        #board.config(text= logic.display_board())
         return
     #enemy move
     if logic.ai: #########
@@ -31,7 +31,7 @@ def play(move = 0):
         b2.pack_forget()
         b3.pack_forget()
         b.pack_forget()
-        board.config(text= logic.display_board())
+        #board.config(text= logic.display_board())
 
 def AIFunc():
     pass
@@ -78,6 +78,9 @@ togglePlayer.pack(side='left')
 
 toggleAI = Button(frame1, text="Play an AI", font=('Times New Roman', 17), width=10, command= AIFunc)
 toggleAI.pack(side='left')
+
+resetAI = Button(frame1, text="Reset AI", font=('Times New Roman', 17), width=10, command= logic.resetAI())
+resetAI.pack(side='left')
 
 frame = Frame(window, bg='#FFFFFF')
 frame.pack(side='bottom', anchor='center', pady = 50)
